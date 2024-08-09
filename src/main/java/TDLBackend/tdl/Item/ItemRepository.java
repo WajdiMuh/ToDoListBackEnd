@@ -11,8 +11,10 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     @Query(value="select it.itemIDfrom item it where it.itemID=: itemID", nativeQuery = true)
     int findById(@Param("itemID") int itemID);
 
-    @Query(value="select * fom item it", nativeQuery = true)
-    fetchItems();
+
+//    List<Item> fetchItems() {
+//    return List<Item> items = entityManager.createQuery("from Item", Item.class).getResultList(); }
+
 
     @Modifying
     @Query(value="delete from item it where it.itemID in ?1",nativeQuery = true)

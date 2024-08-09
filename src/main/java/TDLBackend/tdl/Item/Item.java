@@ -33,11 +33,6 @@ public class Item {
     @Column(name= "checked")
     private boolean checked;
 
-Item(int itemID, String label, boolean checked){
-    this.itemID =itemID;
-    this.label = label;
-    this.checked =checked;
-}
 Item(String label, boolean checked){
         this.label = label;
         this.checked =checked;

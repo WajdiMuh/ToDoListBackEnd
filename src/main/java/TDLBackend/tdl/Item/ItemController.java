@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import java.sql.Timestamp;
 import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import TDLBackend.tdl.Item.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +22,8 @@ import java.util.*;
 @RestController
 @RequestMapping("/item")
 public class ItemController {
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Autowired
     ItemRepository itemRepository;
@@ -27,26 +31,34 @@ public class ItemController {
     List<Integer> itemsToDelete = new ArrayList<Integer>();
 
     @PostMapping("/add")
-    public ResponseEntity<List<Item>> addItem(@RequestParam("itemID")int itemID,@RequestParam("label") String label, @RequestParam("checked") boolean checked){
+    public ResponseEntity<List<Item>> addItem(@RequestParam("label") String label, @RequestParam("checked") boolean checked){
+
         try {
-            itemRepository.save(new Item(itemID,label,checked));
+            itemRepository.save(new Item(label,checked));
+
         }
         catch(Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to to save items");
         }
-        return new ResponseEntity<>(items,HttpStatus.OK);
+        System.out.println("pls");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/fetch")
-    public ResponseEntity fetchItems(){
-        List<Item> items = new List<items>();
+    public ResponseEntity<List<Item>> fetchItems(){
+        List<Item> items = new ArrayList<Item>();
+
         try {
-           iems = itemRepository.fetchItems();
+
+            items = entityManager.createQuery("from Item", Item.class).getResultList();
+            System.out.println(items);
         }
         catch(Exception e) {
+            System.out.println(e);
+
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to to save items");
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(items,HttpStatus.OK);
     }
 
     @PostMapping("delete")
