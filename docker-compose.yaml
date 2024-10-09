@@ -2,10 +2,23 @@ version: '3.9'
 
 services:
   db:
-    container_name: postgres-db
+    container_name: db-container
+    ports:
+      - "5432:5432"
     build:
-      dockerfile: Dockerfile
+      context: ./docker/db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1999
+
+
+  backend:
+    container_name: backend-container
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    build:
+      context: ./docker/backend
+    environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tdl
