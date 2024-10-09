@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.*;
 
-@Entity
+@Entity(name = "item")
 public class Item {
 
     public Item(){}
@@ -37,5 +37,16 @@ Item(String label, boolean checked){
         this.label = label;
         this.checked =checked;
     }
-
+    
+    public int getId() {
+        return id;
+    }
+    
+    public String getLabel() {
+        return label;
+    }
+    
+    public boolean isChecked() {
+        return checked;
+    }
 }

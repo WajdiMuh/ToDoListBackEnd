@@ -1,4 +1,5 @@
 package TDLBackend.tdl.Item;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,6 +18,13 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
 
     @Modifying
-    @Query(value="delete from item it where it.itemID in ?1",nativeQuery = true)
+    @Transactional
+    @Query(value="delete from item it where it.id in ?1",nativeQuery = true)
     void deleteUsersWithIds(List<Integer> itemIDs);
+    
+    
+    @Modifying
+    @Transactional
+    @Query(value="update item it set checked= :checked where it.id =:id",nativeQuery = true)
+    void updatecheckedValue(@Param("id") int id, @Param("checked") boolean checked);
 }
