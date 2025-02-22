@@ -1,6 +1,8 @@
 package TDLBackend.tdl.Item;
 
 import java.util.Objects;
+
+import TDLBackend.tdl.Store.Store;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -32,13 +34,18 @@ public class Item {
 
     @Column(name= "checked")
     private boolean checked;
+    
+    
+    @ManyToOne
+    @JoinColumn(name = "storeid", referencedColumnName = "id")
+    private Store store;
 
 Item(String label, boolean checked){
         this.label = label;
         this.checked =checked;
     }
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
     
@@ -49,4 +56,14 @@ Item(String label, boolean checked){
     public boolean isChecked() {
         return checked;
     }
+    
+    
+    public Store getStore() {
+        return store;
+    }
+    
+    public void setStore(Store storeId) {
+        this.store = store;
+    }
+    
 }

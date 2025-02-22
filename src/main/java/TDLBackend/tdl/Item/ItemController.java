@@ -3,6 +3,8 @@ package TDLBackend.tdl.Item;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,8 +28,8 @@ public class ItemController {
 
     @Autowired
     ItemRepository itemRepository;
-
-
+    
+   
     @PostMapping("/add")
     public ResponseEntity addItem(@RequestParam("label") String label, @RequestParam("checked") boolean checked){
 
@@ -38,6 +40,9 @@ public class ItemController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to to save items");
         }
         System.out.println("pls");
+        
+        
+        
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
