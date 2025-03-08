@@ -1,5 +1,6 @@
 package TDLBackend.tdl.Item;
 
+import TDLBackend.tdl.Store.Store;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import TDLBackend.tdl.Item.ItemRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -31,10 +33,10 @@ public class ItemController {
     
    
     @PostMapping("/add")
-    public ResponseEntity addItem(@RequestParam("label") String label, @RequestParam("checked") boolean checked){
+    public ResponseEntity addItem(@RequestParam("label") String label, @RequestParam("checked") boolean checked, @RequestParam("storeid") Store storeid){
 
         try {
-            itemRepository.save(new Item(label,checked));
+            itemRepository.save(new Item(label,checked,storeid));
         }
         catch(Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to to save items");
@@ -72,7 +74,6 @@ public class ItemController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
     
     @PostMapping("update")
     public ResponseEntity updatecheckedValue(@RequestParam("id") int id, @RequestParam("checked") boolean checked){

@@ -1,5 +1,6 @@
 package TDLBackend.tdl.Meal;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,23 +21,20 @@ public class Meal {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "item_id_seq"
+            generator = "meal_id_seq"
     )
 
     @Column(name="id")
     private int id;
 
-    @Column(name="mealID")
-    private int mealID;
-
     @Column(name="label")
     private String label;
 
-    @Column(name="start")
-    private Timestamp start;
-
-    @Column(name="end")
-    private Timestamp end;
-
+    @Column(name="mealdate")
+    private Timestamp mealDate;
+    
     Meal(){}
+    
+    public Meal(String mealName, LocalDateTime mealDate) {
+    }
 }

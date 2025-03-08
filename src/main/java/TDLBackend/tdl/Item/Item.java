@@ -26,9 +26,6 @@ public class Item {
     @Column(name= "id")
     private int id;
 
-//    @Column(name="itemID")
-//    private int itemID;
-
     @Column(name= "label")
     private String label;
 
@@ -36,14 +33,15 @@ public class Item {
     private boolean checked;
     
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "storeid", referencedColumnName = "id")
     private Store store;
 
-Item(String label, boolean checked){
-        this.label = label;
-        this.checked =checked;
-    }
+    Item(String label, boolean checked, Store storeid){
+            this.label = label;
+            this.checked = checked;
+            this.store = storeid;
+        }
     
     public Integer getId() {
         return id;
@@ -56,7 +54,6 @@ Item(String label, boolean checked){
     public boolean isChecked() {
         return checked;
     }
-    
     
     public Store getStore() {
         return store;

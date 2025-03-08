@@ -1,5 +1,6 @@
 package TDLBackend.tdl.Store;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,17 +26,18 @@ public class Store {
 	private int id;
 	
 	@Column(name= "name")
-	private int name;
+	private String name;
 	
 	@Column(name= "type")
 	private StoreType type;
 	
 	
-	public Store(int id, int name, StoreType type) {
+	public Store(int id, String name, StoreType type) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
 	}
+	
 	
 	public int getId() {
 		return id;
@@ -45,11 +47,11 @@ public class Store {
 		this.id = id;
 	}
 	
-	public int getName() {
+	public String getName() {
 		return name;
 	}
 	
-	public void setName(int name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 	
