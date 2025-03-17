@@ -6,7 +6,3 @@ CREATE TABLE IF NOT EXISTS item (
     storeid integer REFERENCES store(id),
     checked boolean
 );
-
-INSERT INTO item (label,storeid,checked) VALUES
-    ('test_item_1', 1, true),
-    ('test_item_2', 2, false);
