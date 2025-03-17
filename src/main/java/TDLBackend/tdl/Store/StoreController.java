@@ -1,7 +1,5 @@
 package TDLBackend.tdl.Store;
 
-import TDLBackend.tdl.Item.Item;
-import TDLBackend.tdl.Item.ItemRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
-@RequestMapping("/fetch")
+@RequestMapping("/store")
 public class StoreController {
 	
 	
@@ -25,17 +22,20 @@ public class StoreController {
 	@Autowired
 	StoreRepository storeRepository;
 	
-	@GetMapping("/getstores")
-	public ResponseEntity getStores(){
-		List<Store> stores = new ArrayList<>();
-		try {
+	@GetMapping("/fetch")
+	public ResponseEntity<List<Store>> getStores()
+	{
+		List<Store> stores;
+		try 
+		{
 			stores = storeRepository.getStores();
-			
-		}  catch(Exception e) {
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to to fetch stores");
+		}
+		catch(Exception e) 
+		{
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		return new ResponseEntity<>(stores,HttpStatus.OK);
+		return new ResponseEntity<List<Store>>(stores, HttpStatus.OK);
 	}
 	
 	

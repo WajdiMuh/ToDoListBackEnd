@@ -1,26 +1,12 @@
 package TDLBackend.tdl.Item;
 
-import TDLBackend.tdl.Store.Store;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import java.sql.Timestamp;
-import java.util.List;
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
-import TDLBackend.tdl.Item.ItemRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import java.util.*;
-import java.util.stream.Collectors;
-
 
 @RestController
 @RequestMapping("/item")
@@ -33,56 +19,59 @@ public class ItemController {
     
    
     @PostMapping("/add")
-    public ResponseEntity addItem(@RequestParam("label") String label, @RequestParam("checked") boolean checked, @RequestParam("storeid") Store storeid){
+    public ResponseEntity<Void> addItem(@RequestBody Item item)
+    {
 
-        try {
-            itemRepository.save(new Item(label,checked,storeid));
+        try 
+        {
+            itemRepository.addItem(item);
         }
-        catch(Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to to save items");
+        catch(Exception e) 
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        System.out.println("pls");
         
-        
-        
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @GetMapping("/fetch")
-    public ResponseEntity<List<Item>> fetchItems(){
+    public ResponseEntity<List<Item>> fetchItems()
+    {
         List<Item> items;
     
         try {
             items = entityManager.createQuery("from item", Item.class).getResultList();
-            System.out.println(items);
         }
-        catch(Exception e) {
-            System.out.println(e);
-
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to save items");
+        catch(Exception e)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(items,HttpStatus.OK);
+        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
     }
 
-    @PostMapping("delete")
-    public ResponseEntity deleteItems(@RequestParam("itemIDs") List<Integer> itemIDs){
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteItems(@RequestBody List<Integer> itemIDs)
+    {
         try {
-            itemRepository.deleteUsersWithIds(itemIDs);
+            itemRepository.deleteitemswithids(itemIDs);
         }
         catch(Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to delete items");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
     
-    @PostMapping("update")
-    public ResponseEntity updatecheckedValue(@RequestParam("id") int id, @RequestParam("checked") boolean checked){
+    @PutMapping("/updateCheck")
+    public ResponseEntity<Void> updatecheckedValue(@RequestBody HashMap<Integer, Boolean> id_checked_map)
+    {
         try {
-            itemRepository.updatecheckedValue(id,checked);
+            for (Map.Entry<Integer, Boolean> entry : id_checked_map.entrySet()) {
+                itemRepository.updatecheckedValue(entry.getKey(), entry.getValue());
+            }
         }
         catch(Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to delete items");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

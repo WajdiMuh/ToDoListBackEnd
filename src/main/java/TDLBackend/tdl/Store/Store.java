@@ -1,10 +1,10 @@
 package TDLBackend.tdl.Store;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+
+import TDLBackend.tdl.Item.Item;
 import jakarta.persistence.*;
 
 @Entity(name = "store")
@@ -31,11 +31,14 @@ public class Store {
 	@Column(name= "type")
 	private StoreType type;
 	
-	
-	public Store(int id, String name, StoreType type) {
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "storeid")
+	private List<Item> items;
+
+	public Store(int id, String name, StoreType type, List<Item> items) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
+		this.items = items;
 	}
 	
 	
@@ -55,11 +58,19 @@ public class Store {
 		this.name = name;
 	}
 	
-	public StoreType getType() {
-		return type;
+	public int getType() {
+		return type.ordinal();
 	}
 	
 	public void setType(StoreType type) {
 		this.type = type;
+	}
+
+	public List<Item> getItems() {
+		return this.items;
+	}
+	
+	public void setType(List<Item> items) {
+		this.items = items;
 	}
 }

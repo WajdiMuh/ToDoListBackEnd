@@ -1,12 +1,16 @@
 package TDLBackend.tdl.Meal;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+
 
 @Entity
 @Table(name="meal")
@@ -31,10 +35,28 @@ public class Meal {
     private String label;
 
     @Column(name="mealdate")
-    private Timestamp mealDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate mealDate;
     
     Meal(){}
     
-    public Meal(String mealName, LocalDateTime mealDate) {
+    public Meal(String label, LocalDate mealDate) {
+        this.label = label;
+        this.mealDate = mealDate;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public String getLabel()
+    {
+        return this.label;
+    }
+
+    public LocalDate getMealDate()
+    {
+        return this.mealDate;
     }
 }

@@ -28,7 +28,6 @@ dependencies {
 	implementation 'io.socket:engine.io-server:6.1.0'
 	runtimeOnly 'org.postgresql:postgresql'
 	implementation 'io.socket:engine.io-server-jetty:6.1.0'
-
 }
 
 tasks.named('test') {
