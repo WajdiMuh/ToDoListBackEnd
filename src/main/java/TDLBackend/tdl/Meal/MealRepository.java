@@ -16,11 +16,14 @@ public interface MealRepository extends JpaRepository<Meal,Integer> {
      @Query(value="insert into meal (label,mealdate) values(:#{#meal.label}, :#{#meal.mealDate})", nativeQuery = true)
      void addMeal(@Param("meal") Meal meal);
 
-     @Query(value="select * from (select *,date_part('week', mealdate) as cw, date_part('year', mealdate) as year from meal) where year = :year and cw = :weeknumber", nativeQuery = true)
+     @Query(value="select * from (select *,date_part('week', mealdate) as cw, date_part('isoyear', mealdate) as year from meal) where year = :year and cw = :weeknumber", nativeQuery = true)
      List<Meal> getMealsInCalenderWeek(@Param("year") int year, @Param("weeknumber") int weekNumber);
 
      @Modifying
      @Transactional
      @Query(value="delete from meal m where m.id = :id", nativeQuery = true)
      void deleteMeal(Integer id);
+
+     @Query(value="select * from meal m where m.id = :id", nativeQuery = true)
+     Meal getMealByID(Integer id);
 }

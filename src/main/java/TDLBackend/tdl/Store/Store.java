@@ -1,8 +1,6 @@
 package TDLBackend.tdl.Store;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 import TDLBackend.tdl.Item.Item;
 import jakarta.persistence.*;
@@ -31,7 +29,7 @@ public class Store {
 	@Column(name= "type")
 	private StoreType type;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "storeid")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "storeid", fetch = FetchType.EAGER)
 	private List<Item> items;
 
 	public Store(int id, String name, StoreType type, List<Item> items) {

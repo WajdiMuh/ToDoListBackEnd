@@ -49,6 +49,7 @@
             "**/gradlew.bat",
             "**/gradlew",
             "**/gradlew-e"
-        ]
+        ],
+        "java.configuration.updateBuildConfiguration": "interactive"
     }
 }
